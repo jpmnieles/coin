@@ -28,6 +28,26 @@ DTYPE_BIT_SIZE: Dict[dtype, int] = {
 }
 
 
+def normalized_coordinates_and_features(img):
+    """Converts an image to a set of coordinates and features.
+
+    Args:
+        img (torch.Tensor): Shape (channels, height, width).
+    """
+    # Coordinates are indices of all non zero locations of a tensor of ones of
+    # same shape as spatial dimensions of image
+    coordinates = torch.ones(img.shape[1:]).nonzero(as_tuple=False).float()
+    # Normalize coordinates to lie in [-.5, .5]
+    norm_coordinates = torch.zeros(coordinates.shape)
+    norm_coordinates[:,0] = coordinates[:,0]/(img.shape[1] - 1)-0.5
+    norm_coordinates[:,1] = coordinates[:,1]/(img.shape[2] - 1)-0.5
+    # Convert to range [-1, 1]
+    norm_coordinates *= 2
+    # Convert image to a tensor of features of shape (num_points, channels)
+    features = img.reshape(img.shape[0], -1).T
+    return norm_coordinates, features
+
+
 def to_coordinates_and_features(img):
     """Converts an image to a set of coordinates and features.
 
