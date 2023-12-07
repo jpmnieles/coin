@@ -1,0 +1,15 @@
+# Parameters
+
+logdir = "results/231208_freq_enc_7"
+num_iters = 50000
+learning_rate = 2e-4
+# seed = random.randint(1, int(1e6))
+seed = 1
+full_dataset = False
+image_id = 15
+layer_size = 28
+num_layers = 10
+w0 = 30.0
+w0_initial = 30.0
+L = 10
+input_dim = L*4
